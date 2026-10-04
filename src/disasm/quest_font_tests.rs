@@ -1,0 +1,66 @@
+use super::*;
+
+#[test]
+fn 현재_lookup은_345개를_검색하고_실패하면_344를_쓴다() {
+    assert_eq!(QUEST_CODE_TABLE_COUNT, 345);
+    assert_eq!(QUEST_GLYPH_FALLBACK_INDEX, 344);
+    assert_eq!(QUEST_GLYPH_CELL_RECORD_STRIDE, 12);
+}
+
+#[test]
+fn lookup과_cell_resource_field는_서로_다른_경계다() {
+    assert_eq!(QUEST_GLYPH_CELL_INDEX_OBJECT_OFFSET, 0x66);
+    assert_eq!(QUEST_GLYPH_RESOURCE_SELECTOR_STATE_OFFSET, 0x1E);
+    assert_eq!(QUEST_GLYPH_CELL_TABLE_DESCRIPTOR_OFFSET, 0x1C);
+}
+
+#[test]
+fn font_state는_108바이트_10개이며_초기_selector는_1이다() {
+    assert_eq!(QUEST_FONT_STATE_BASE_RUNTIME, 0x800E_F608);
+    assert_eq!(QUEST_FONT_STATE_RECORD_COUNT, 10);
+    assert_eq!(QUEST_FONT_STATE_RECORD_STRIDE, 108);
+    assert_eq!(QUEST_FONT_STATE_BYTES, 0x438);
+    assert_eq!(QUEST_FONT_INITIAL_RESOURCE_SELECTOR, 1);
+    assert_eq!(QUEST_FONT_STATE_BOOT_CALL_RUNTIME, 0x8002_7510);
+    assert_eq!(QUEST_FONT_STATE_CONDITIONAL_RESET_CALL_RUNTIME, 0x8007_F17C);
+}
+
+#[test]
+fn font_descriptor는_36바이트_stride로_selector_1을_고른다() {
+    assert_eq!(QUEST_FONT_DESCRIPTOR_STRIDE, 36);
+    assert_eq!(
+        QUEST_FONT_DESCRIPTOR_ROOT_RUNTIME + QUEST_FONT_DESCRIPTOR_STRIDE as u32,
+        QUEST_FONT_DESCRIPTOR_RUNTIME
+    );
+    assert_eq!(QUEST_FONT_DESCRIPTOR_NAME_OFFSET, 0x04);
+    assert_eq!(QUEST_FONT_DESCRIPTOR_COMPRESSED_BYTES_OFFSET, 0x08);
+    assert_eq!(QUEST_FONT_DESCRIPTOR_DECODED_BYTES_OFFSET, 0x0C);
+    assert_eq!(QUEST_FONT_DESCRIPTOR_SOURCE_OFFSET, 0x10);
+    assert_eq!(QUEST_FONT_DESCRIPTOR_AUX_OFFSET, 0x14);
+    assert_eq!(QUEST_FONT_DESCRIPTOR_VRAM_X_OFFSET, 0x18);
+    assert_eq!(QUEST_FONT_DESCRIPTOR_VRAM_Y_OFFSET, 0x1A);
+    assert_eq!(QUEST_FONT_DESCRIPTOR_CELL_TABLE_OFFSET, 0x1C);
+    assert_eq!(QUEST_FONT_DESCRIPTOR_PIXEL_FORMAT_OFFSET, 0x20);
+}
+
+#[test]
+fn indexed4_atlas는_64word_x_256행으로_upload된다() {
+    assert_eq!(
+        usize::from(QUEST_FONT_VRAM_WIDTH_WORDS) * 2 * usize::from(QUEST_FONT_ATLAS_HEIGHT),
+        QUEST_FONT_SOURCE_BYTES
+    );
+    assert_eq!(QUEST_FONT_ATLAS_WIDTH, 256);
+    assert_eq!(QUEST_FONT_ATLAS_HEIGHT, 256);
+    assert_eq!(QUEST_FONT_VRAM_X_WORDS, 576);
+    assert_eq!(QUEST_FONT_VRAM_Y, 0);
+    assert_eq!(QUEST_FONT_PIXEL_FORMAT_INDEXED4, 0);
+    assert_eq!(QUEST_FONT_DESCRIPTOR_INITIAL_FLAGS, 0x0001_0000);
+    assert_eq!(QUEST_FONT_ASSET_NAME_RUNTIME, 0x8008_DB04);
+    assert_eq!(QUEST_FONT_COMPRESSED_BYTES, 27_104);
+    assert_eq!(QUEST_FONT_DESCRIPTOR_STAGING_STORE_RUNTIME, 0x8001_9734);
+    assert_eq!(QUEST_FONT_DESCRIPTOR_DECODED_STORE_RUNTIME, 0x8001_BED8);
+    assert_eq!(QUEST_FONT_UPLOAD_TARGET_RUNTIME, 0x8009_38B0);
+    assert_eq!(QUEST_FONT_UPLOAD_SYNC_CALL_RUNTIME, 0x8001_C074);
+    assert_eq!(QUEST_FONT_UPLOAD_SYNC_TARGET_RUNTIME, 0x8009_3604);
+    assert_eq!(QUEST_FONT_UPLOAD_SYNC_NAME_RUNTIME, 0x8001_3D64);
+}
